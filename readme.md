@@ -23,6 +23,9 @@ export function login(username, password, door) {
         door.setState({user})
     }
 }
+
+// you can call the actions with simply:
+// login(username,password)
 ```
 
 ### accessing state
