@@ -1,7 +1,7 @@
 {
-  "name": "door",
+  "name": "storu",
   "version": "1.0.0",
-  "description": "mini state storage",
+  "description": "context store hook",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

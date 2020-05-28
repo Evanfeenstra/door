@@ -1,15 +1,15 @@
 import React, {useState, useContext, useEffect} from 'react'
 
-const door = React.createContext({})
+const storu = React.createContext({})
 
-const localStorageKey = '_door'
+const localStorageKey = '_storu'
 
-function useDoor(){
-  var ctx = useContext(door)
+function useStoru(){
+  var ctx = useContext(storu)
   return ctx||{}
 }
 
-function createActions(actions, theDoor){
+function createActions(actions, theStoru){
   if(typeof actions!=='object') return {}
   var r = {}
   for (const key in actions) {
@@ -18,14 +18,14 @@ function createActions(actions, theDoor){
     if (actions.hasOwnProperty(key)) {
       r[key] = function() {
         const args = arguments||[]
-        return value(...args,theDoor)
+        return value(...args,theStoru)
       } 
     }
   }
   return r
 }
 
-function DoorProvider(props){
+function StoruProvider(props){
 
   const [store,setStore] = useState({})
   const [state,setState] = useState({})
@@ -53,21 +53,21 @@ function DoorProvider(props){
     hyrdateStore()
   }, [])
 
-  const theDoor = {
+  const theStoru = {
     ...store,
     ...state,
     setState:setTheState,
     setStore:setTheStore,
   }
-  return <door.Provider value={{
-    ...theDoor,
-    actions: createActions(props.actions, theDoor)
+  return <storu.Provider value={{
+    ...theStoru,
+    actions: createActions(props.actions, theStoru)
   }}>
     {props.children}
-  </door.Provider>
+  </storu.Provider>
 }
 
-export {useDoor, DoorProvider}
+export {useStoru, StoruProvider}
 
 export async function getStore(){
   const theStore = await localStorage.getItem(localStorageKey)

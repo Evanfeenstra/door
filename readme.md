@@ -1,51 +1,41 @@
-# door
+# storu
 
 ### usage
 ```jsx
-import {DoorProvider} from 'door'
+import {StoruProvider} from 'storu'
 import * as actions from './actions'
 
 function App(){
-    return <DoorProvider actions={actions}>
-        {/* YOUR APP HERE */}
-    </DoorProvider>
-}
-```
-
-### actions
-`door` is injected as the last argument in each "action", with two methods:
-- `door.setState`: set state into the context
-- `door.setStore`: set state that is persisted to localStorage
-```js
-export function login(username, password, door) {
-    try {
-        const user = await axios.pos('/loginroute', {username,password})
-        door.setState({user})
-    }
+    return <StoruProvider actions={actions}>
+        <Auth />
+    </StoruProvider>
 }
 
-// you can call the actions with simply:
-// login(username,password)
-```
+function Auth(){
+    const storu = useStoru()
+    const {user,actions,setState} = storu
 
-### accessing state
-
-every property you set into state or store can be accessed with useDoor
-
-```js
-import {useDoor} from 'door'
-
-function MyUserComponent(){
-    const door = useDoor()
-    const {user,setState} = door
+    const isSignedIn = user&&user.name
     return <div>
-
         <span>{user.name}</span>
-
-        <button onClick={()=>setState({user:null})}>
-            click to logout
-        </button>
-        
+        {!isSignedIn ?
+            <button onClick={actions.login('fognet','*****')}> 
+                sign in!
+            </button> :
+            <button onClick={()=>setState({user:null})}>
+                click to logout
+            </button>
+        }
     </div>
 }
 ```
+
+### create your actions
+`storu` is injected as the last argument in each "action", with two methods:
+- `storu.setState`: set state into the context
+- `storu.setStore`: set state that is also persisted to localStorage
+```js
+export function login(username, password, storu) {
+    const user = await axios.post('/loginroute', {username,password})
+    storu.setState({user})
+}
